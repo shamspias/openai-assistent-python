@@ -18,12 +18,9 @@ class OpenAIAssistant:
             raise OpenAIAssistantError(f"An error occurred while retrieving assistants: {e}")
 
     def get_assistant(self, assistant_id):
-        # Retrieve the assistant details by ID from the OpenAI API
         try:
-            assistant = self.client.beta.assistants.retrieve(assistant_id)
-            return assistant
+            return self.client.beta.assistants.retrieve(assistant_id)
         except Exception as e:
-            print(f"An error occurred while retrieving the assistant: {e}")
             raise OpenAIAssistantError(f"An error occurred while retrieving the assistant: {e}")
 
     def create_assistant(self, name, model, description=None, tools=None, file_ids=None):
@@ -56,18 +53,21 @@ class OpenAIAssistant:
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while listing assistants: {e}")
 
-    def create_thread(self, assistant_id, initial_message, file_ids=None):
+    # Adjusted the method signature to match expected OpenAI API behavior
+    def create_thread(self, assistant_id, initial_message, file_id=None):
         try:
-            return self.client.beta.threads.create(
+            # Assuming that creating a thread is supported by the OpenAI API
+            thread = self.client.beta.threads.create(
                 assistant_id=assistant_id,
                 messages=[
                     {
                         "role": "user",
                         "content": initial_message,
-                        "file_ids": file_ids or []
+                        "file_ids": [file_id] if file_id else []
                     }
                 ]
             )
+            return thread
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while creating a thread: {e}")
 
@@ -83,18 +83,16 @@ class OpenAIAssistant:
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while listing threads: {e}")
 
-    def chat_with_assistant(self, thread_id, message, file_ids=None):
+    # Adjusted the method signature to match expected OpenAI API behavior
+    def chat_with_assistant(self, thread_id, assistant_id, message):
         try:
-            return self.client.beta.threads.messages.create(
+            # Assuming that chatting with an assistant is supported by the OpenAI API
+            response = self.client.beta.threads.runs.create(
                 thread_id=thread_id,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": message,
-                        "file_ids": file_ids or []
-                    }
-                ]
+                assistant_id=assistant_id,
+                messages=[{"role": "user", "content": message}]
             )
+            return response
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while chatting with the assistant: {e}")
 
@@ -110,8 +108,3 @@ class OpenAIAssistant:
                 return "Invalid command."
         except OpenAIAssistantError as e:
             return str(e)
-
-# Example usage to test:
-# client = openai.Client(api_key='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')
-# assistant = OpenAIAssistant(client)
-# assistant.create_or_get_assistant('MyAssistant', 'gpt-4-1106-preview')
