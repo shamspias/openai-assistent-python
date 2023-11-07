@@ -16,8 +16,9 @@ def main():
     file_ids = os.getenv('FILE_IDS', '').split(',')  # Split by comma to get list of file IDs
 
     openai_client = openai.Client(api_key=api_key)
-    assistant_manager = OpenAIAssistant(openai_client)
-    chat_interface = TerminalChatInterface(assistant_manager, assistant_id=assistant_id, assistant_name=assistant_name)
+    assistant_manager = OpenAIAssistant(openai_client, file_ids=file_ids)
+    chat_interface = TerminalChatInterface(assistant_manager, assistant_id=assistant_id, assistant_name=assistant_name,
+                                           file_ids=file_ids)
     chat_interface.start_chat()
 
 
