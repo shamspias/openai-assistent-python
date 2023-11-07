@@ -53,20 +53,14 @@ class OpenAIAssistant:
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while listing assistants: {e}")
 
-    # Adjusted the method signature to match expected OpenAI API behavior
-    def create_thread(self, assistant_id, initial_message, file_id=None):
+    def create_thread(self, initial_message, file_id=None):
         try:
-            # Assuming that creating a thread is supported by the OpenAI API
-            thread = self.client.beta.threads.create(
-                assistant_id=assistant_id,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": initial_message,
-                        "file_ids": [file_id] if file_id else []
-                    }
-                ]
-            )
+            messages = [{
+                "role": "user",
+                "content": initial_message,
+                "file_ids": [file_id] if file_id else []
+            }]
+            thread = self.client.beta.threads.create(messages=messages)
             return thread
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while creating a thread: {e}")
@@ -77,19 +71,16 @@ class OpenAIAssistant:
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while deleting a thread: {e}")
 
-    def list_threads(self, assistant_id):
+    def list_threads(self):
         try:
-            return self.client.beta.threads.list(assistant_id=assistant_id).data
+            return self.client.beta.threads.list().data
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while listing threads: {e}")
 
-    # Adjusted the method signature to match expected OpenAI API behavior
-    def chat_with_assistant(self, thread_id, assistant_id, message):
+    def chat_with_assistant(self, thread_id, message):
         try:
-            # Assuming that chatting with an assistant is supported by the OpenAI API
             response = self.client.beta.threads.runs.create(
                 thread_id=thread_id,
-                assistant_id=assistant_id,
                 messages=[{"role": "user", "content": message}]
             )
             return response
