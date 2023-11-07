@@ -13,13 +13,16 @@ def main():
     api_key = os.getenv('OPENAI_API_KEY')
     assistant_id = os.getenv('ASSISTANT_ID')
     assistant_name = os.getenv('ASSISTANT_NAME')
-    file_ids_str = os.getenv('FILE_IDS')
-    file_ids = file_ids_str.split(',') if file_ids_str else []
+    file_ids = os.getenv('FILE_IDS', '').split(',') if os.getenv('FILE_IDS') else []
 
     openai_client = openai.Client(api_key=api_key)
-    assistant_manager = OpenAIAssistant(openai_client, file_ids=file_ids)
-    chat_interface = TerminalChatInterface(assistant_manager, assistant_id=assistant_id, assistant_name=assistant_name,
-                                           file_ids=file_ids)
+    assistant_manager = OpenAIAssistant(openai_client)
+    chat_interface = TerminalChatInterface(
+        assistant_manager,
+        assistant_id=assistant_id,
+        assistant_name=assistant_name,
+        file_ids=file_ids
+    )
     chat_interface.start_chat()
 
 
