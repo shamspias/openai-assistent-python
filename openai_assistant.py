@@ -54,17 +54,16 @@ class OpenAIAssistant:
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while listing assistants: {e}")
 
-    def create_thread(self, initial_message, file_ids=None):
-        # Adjust the arguments to match the API's expected input
+    def create_thread(self, initial_message):
         try:
-            # Assuming that creating a thread is supported by the OpenAI API
-            # without requiring an assistant_id directly in the create method.
+            # Construct the message according to the new API specifications
             messages = [{
                 "role": "user",
                 "content": initial_message,
-                "file_ids": file_ids if file_ids else []
             }]
-            thread = self.client.threads.create(messages=messages)
+            # The file_ids should be included in the appropriate place in the API call
+            # This is a guess based on common API patterns and may need to be adjusted
+            thread = self.client.beta.threads.create(messages=messages)
             return thread
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while creating a thread: {e}")

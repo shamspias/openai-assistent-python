@@ -21,7 +21,6 @@ def main():
         assistant_manager,
         assistant_id=assistant_id,
         assistant_name=assistant_name,
-        file_ids=file_ids
     )
     chat_interface.start_chat()
 

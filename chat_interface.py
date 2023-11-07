@@ -45,8 +45,8 @@ class TerminalChatInterface:
         """Start a new thread for conversation with the assistant."""
         initial_message = "Hello, how can I assist you today?"
         try:
-            thread = self.assistant_manager.create_thread(self.assistant_id, initial_message, file_ids=self.file_ids)
-            self.thread_id = thread.get('id')
+            thread = self.assistant_manager.create_thread(initial_message)
+            self.thread_id = thread.id
             print(f"Bot: {initial_message}")
             self.chat_loop()  # Start the chat loop after initializing the thread
         except Exception as e:
