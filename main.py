@@ -13,7 +13,8 @@ def main():
     api_key = os.getenv('OPENAI_API_KEY')
     assistant_id = os.getenv('ASSISTANT_ID')
     assistant_name = os.getenv('ASSISTANT_NAME')
-    file_ids = os.getenv('FILE_IDS', '').split(',')  # Split by comma to get list of file IDs
+    file_ids_str = os.getenv('FILE_IDS')
+    file_ids = file_ids_str.split(',') if file_ids_str else []
 
     openai_client = openai.Client(api_key=api_key)
     assistant_manager = OpenAIAssistant(openai_client, file_ids=file_ids)
