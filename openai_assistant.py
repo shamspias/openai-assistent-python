@@ -17,6 +17,15 @@ class OpenAIAssistant:
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while retrieving assistants: {e}")
 
+    def get_assistant(self, assistant_id):
+        # Retrieve the assistant details by ID from the OpenAI API
+        try:
+            assistant = self.client.beta.assistants.retrieve(assistant_id)
+            return assistant
+        except Exception as e:
+            print(f"An error occurred while retrieving the assistant: {e}")
+            raise OpenAIAssistantError(f"An error occurred while retrieving the assistant: {e}")
+
     def create_assistant(self, name, model, description=None, tools=None, file_ids=None):
         try:
             return self.client.beta.assistants.create(
