@@ -11,10 +11,9 @@ load_dotenv()
 
 def main():
     api_key = os.getenv('OPENAI_API_KEY')
-    assistant_id = os.getenv('ASSISTANT_ID')  # Assuming you have an ASSISTANT_ID in your .env
-    assistant_name = os.getenv('ASSISTANT_NAME')  # Assuming you also have an ASSISTANT_NAME in your .env
-    # If you don't have an ASSISTANT_ID or ASSISTANT_NAME, you can create a new assistant with:
-    # assistant_manager.create_assistant() and just use ASSISTANT_NAME for it
+    assistant_id = os.getenv('ASSISTANT_ID')
+    assistant_name = os.getenv('ASSISTANT_NAME')
+    file_ids = os.getenv('FILE_IDS', '').split(',')  # Split by comma to get list of file IDs
 
     openai_client = openai.Client(api_key=api_key)
     assistant_manager = OpenAIAssistant(openai_client)
