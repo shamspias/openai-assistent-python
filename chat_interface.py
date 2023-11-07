@@ -1,7 +1,7 @@
 class TerminalChatInterface:
     """A simple terminal interface to interact with an OpenAI Assistant."""
 
-    def __init__(self, assistant_manager, assistant_id=None, assistant_name=None):
+    def __init__(self, assistant_manager, assistant_id=None, assistant_name=None, file_ids=None):
         """
         Initialize the interface with an instance of OpenAIAssistant.
         If both assistant ID and name are provided, verify they match.
@@ -9,6 +9,7 @@ class TerminalChatInterface:
         self.assistant_manager = assistant_manager
         self.assistant_id = assistant_id
         self.assistant_name = assistant_name
+        self.file_ids = file_ids
         self.thread_id = None
 
         if assistant_id and assistant_name:
@@ -38,7 +39,8 @@ class TerminalChatInterface:
         """Start a new thread for conversation with the assistant."""
         try:
             initial_message = "Hello, how can I assist you today?"
-            thread = self.assistant_manager.create_thread(self.assistant_id, initial_message)
+            thread = self.assistant_manager.create_thread(self.assistant_id, initial_message,
+                                                          file_ids=self.file_ids)  # Updated
             self.thread_id = thread.get('id')
             print(f"Bot: {initial_message}")
 
