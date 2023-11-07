@@ -7,8 +7,9 @@ class OpenAIAssistantError(Exception):
 
 
 class OpenAIAssistant:
-    def __init__(self, client):
+    def __init__(self, client, file_ids=None):
         self.client = client
+        self.file_ids = file_ids if file_ids is not None else []
 
     def get_assistant_by_name(self, name):
         try:
@@ -53,14 +54,17 @@ class OpenAIAssistant:
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while listing assistants: {e}")
 
-    def create_thread(self, initial_message, file_id=None):
+    def create_thread(self, assistant_id, initial_message):
         try:
             messages = [{
                 "role": "user",
                 "content": initial_message,
-                "file_ids": [file_id] if file_id else []
+                "file_ids": self.file_ids
             }]
-            thread = self.client.beta.threads.create(messages=messages)
+            thread = self.client.beta.threads.create(
+                assistant_id=assistant_id,
+                messages=messages
+            )
             return thread
         except Exception as e:
             raise OpenAIAssistantError(f"An error occurred while creating a thread: {e}")
