@@ -1,7 +1,7 @@
 import asyncio
 import os
 from dotenv import load_dotenv
-from openai._client import AsyncOpenAI
+from openai import AsyncOpenAI
 from thread_manager import ThreadManager
 from assistant_manager import AssistantManager
 from chat_session import ChatSession
