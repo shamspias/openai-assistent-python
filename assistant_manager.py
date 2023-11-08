@@ -2,6 +2,9 @@ from typing import Optional
 
 
 class AssistantManager:
+    """
+    A class to manage assistants.
+    """
     def __init__(self, client):
         self.client = client
 
