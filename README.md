@@ -5,7 +5,7 @@ here I show a basic example of how to use the OpenAI assistant API to create a s
 
 ## Installation
 ```bash
-git clone 
+git clone https://github.com/shamspias/openai-assistent-python
 ```
 ```bash
 python3 -m venv venv
